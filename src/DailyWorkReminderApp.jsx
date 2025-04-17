@@ -235,8 +235,7 @@ const generateTextOutput = () => {
                       }}
                     >
                       <div>
-                        <input
-  type="text"
+                        <textarea
   value={task.content}
   onChange={(e) => {
     const newContent = e.target.value;
@@ -249,6 +248,7 @@ const generateTextOutput = () => {
     fontSize: "1rem",
     border: "none",
     background: "transparent",
+    resize: "none",
     width: "100%"
   }}
 />
