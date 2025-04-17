@@ -115,6 +115,7 @@ const entries = owners.flatMap((owner) =>
     let text = "";
     people.forEach((person) => {
       const personTasks = tasks.filter((task) => task.owners.includes(person) && !task.completed);
+      .sort((a, b) => new Date(a.due) - new Date(b.due)); // 🔁 排序在這裡
       if (personTasks.length > 0) {
         text += `\n👤 ${person}\n`;
         personTasks.forEach((task) => {
