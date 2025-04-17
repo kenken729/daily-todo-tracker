@@ -211,7 +211,7 @@ export default function DailyWorkReminderApp() {
                       <div>
                         <strong>{task.content}</strong>
                         <div style={{ fontSize: "0.8rem", color: "#444" }}>
-                          建立：{format(parseISO(task.createdAt), "yyyy-MM-dd")}｜截止：{format(parseISO(task.due), "yyyy-MM-dd")}
+                          建立：{format(parseISO(task.createdAt), "yyyy-MM-dd")}｜截止：<span style={{ color: "red" }}>{format(parseISO(task.due), "yyyy-MM-dd")}
                           {isToday(parseISO(task.due)) ? " ⚠️ 今日截止" : isBefore(parseISO(task.due), new Date()) ? " ⚠️ 已逾期" : ""}
                         </div>
                       </div>
