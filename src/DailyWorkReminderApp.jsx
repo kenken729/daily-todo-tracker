@@ -15,7 +15,7 @@ export default function DailyWorkReminderApp() {
 
 const [newTask, setNewTask] = useState({
   content: "",
-  due: new Date().toISOString().split("T")[0], // 轉為 yyyy-MM-dd 格式
+  due: "",
   owners: []
 });
   const [showTextOutput, setShowTextOutput] = useState(false);
@@ -57,14 +57,17 @@ const [newTask, setNewTask] = useState({
       return [...new Set(resolved)];
     };
 
-    const owners = resolveOwners();
-    const entries = owners.map((owner) => ({
-      ...newTask,
-      owners: [owner],
-      id: Date.now() + Math.random(),
-      createdAt: new Date().toISOString(),
-      completed: false
-    }));
+const owners = resolveOwners();
+const dueDate = newTask.due || new Date().toISOString().split("T")[0];
+
+const entries = owners.map((owner) => ({
+  ...newTask,
+  due: dueDate,
+  owners: [owner],
+  id: Date.now() + Math.random(),
+  createdAt: new Date().toISOString(),
+  completed: false
+}));
     setTasks([...tasks, ...entries]);
     setNewTask({ content: "", due: "", owners: [] });
   };
@@ -133,12 +136,12 @@ const [newTask, setNewTask] = useState({
               value={newTask.content}
               onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
             />
-            <input
-              type="date"
-              value={newTask.due}
-              onChange={(e) => setNewTask({ ...newTask, due: e.target.value })}
-              style={{ background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
-            />
+<input
+  type="date"
+  defaultValue={new Date().toISOString().split("T")[0]}
+  onChange={(e) => setNewTask({ ...newTask, due: e.target.value })}
+  style={{ background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
+/>
             <button onClick={handleAddTask} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>新增</button>
             <button onClick={() => setShowTextOutput(!showTextOutput)} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>
               {showTextOutput ? "隱藏文字清單" : "產生可複製清單"}
