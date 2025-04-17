@@ -146,7 +146,7 @@ const generateTextOutput = () => {
   const sortedCompletedTasks = tasks.filter((t) => t.completed).sort((a, b) => new Date(b.due) - new Date(a.due));
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "auto" }}>
+    <div style={{ maxWidth: "1200px", margin: "auto", fontFamily: "'Noto Sans TC', 'Microsoft JhengHei', Arial, Helvetica, sans-serif", fontWeight: "500" }}>
       <div style={{ display: "flex", gap: "2rem" }}>
         <div style={{ flex: 1 }}>
           <h1 style={{ fontSize: "1.8rem", fontWeight: "bold" }}>待辦清單</h1>
@@ -235,7 +235,23 @@ const generateTextOutput = () => {
                       }}
                     >
                       <div>
-                        <strong>{task.content}</strong>
+                        <input
+  type="text"
+  value={task.content}
+  onChange={(e) => {
+    const newContent = e.target.value;
+    setTasks((prev) =>
+      prev.map((t) => t.id === task.id ? { ...t, content: newContent } : t)
+    );
+  }}
+  style={{
+    fontWeight: "bold",
+    fontSize: "1rem",
+    border: "none",
+    background: "transparent",
+    width: "100%"
+  }}
+/>
                        <div style={{ fontSize: "0.8rem", color: "#444", display: "flex", alignItems: "center", gap: "0.5rem" }}>
   建立：{format(parseISO(task.createdAt), "yyyy-MM-dd")}｜截止：
   <input
