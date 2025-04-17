@@ -82,7 +82,7 @@ export default function DailyWorkReminderApp() {
       })
     )
       return "#c8e6c9";
-    return "#ededed";
+    return "#f2f2f2";
   };
 
   const generateTextOutput = () => {
