@@ -226,13 +226,30 @@ const entries = owners.flatMap((owner) =>
                     >
                       <div>
                         <strong>{task.content}</strong>
-                        <div style={{ fontSize: "0.8rem", color: "#444" }}>
-  建立：{format(parseISO(task.createdAt), "yyyy-MM-dd")}｜
-  截止：
-  <span style={{ color: "red" }}>
-    {format(parseISO(task.due), "yyyy-MM-dd")}
+                       <div style={{ fontSize: "0.8rem", color: "#444", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+  建立：{format(parseISO(task.createdAt), "yyyy-MM-dd")}｜截止：
+  <input
+    type="date"
+    value={task.due}
+    onChange={(e) => {
+      const newDate = e.target.value;
+      setTasks((prev) =>
+        prev.map((t) => t.id === task.id ? { ...t, due: newDate } : t)
+      );
+    }}
+    style={{
+      color: "red",
+      fontWeight: "bold",
+      border: "1px solid #ccc",
+      borderRadius: "4px",
+      padding: "2px 6px",
+      background: "#fff",
+      cursor: "pointer"
+    }}
+  />
+  <span>
+    {isToday(parseISO(task.due)) ? "⚠️ 今日截止" : isBefore(parseISO(task.due), new Date()) ? "⚠️ 已逾期" : ""}
   </span>
-  {isToday(parseISO(task.due)) ? " ⚠️ 今日截止" : isBefore(parseISO(task.due), new Date()) ? " ⚠️ 已逾期" : ""}
 </div>
                       </div>
                       <button onClick={() => toggleComplete(task.id)}>完成</button>
