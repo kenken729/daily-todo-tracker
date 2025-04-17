@@ -157,7 +157,6 @@ const [newTask, setNewTask] = useState({
                     </label>
                   ))}
                 </div>
-                <div style={{ marginTop: "0.5rem", fontWeight: "bold" }}>📂 國內部門</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
                   {["佳平", "潘霆", "彥銘", "姿穎", "育全", "張琪", "志賢"].map((p) => (
                     <label key={p}>
@@ -169,7 +168,6 @@ const [newTask, setNewTask] = useState({
                     </label>
                   ))}
                 </div>
-                <div style={{ marginTop: "0.5rem", fontWeight: "bold" }}>🌏 海外部門</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
                   {["佳宇", "琪珊", "雄欽", "達那", "韋燕", "妍麗", "小希"].map((p) => (
                     <label key={p}>
