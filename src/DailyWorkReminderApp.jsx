@@ -67,14 +67,18 @@ const handleAddTask = () => {
   const owners = resolveOwners();
   const dueDate = newTask.due || new Date().toISOString().split("T")[0];
 
-  const entries = owners.map((owner) => ({
-    ...newTask,
+const contentParts = newTask.content.split("、").map(part => part.trim()).filter(Boolean);
+
+const entries = owners.flatMap((owner) =>
+  contentParts.map((part) => ({
+    content: part,
     due: dueDate,
     owners: [owner],
     id: Date.now() + Math.random(),
     createdAt: new Date().toISOString(),
     completed: false
-  }));
+  }))
+);
   setTasks([...tasks, ...entries]);
   setNewTask({ content: "", due: "", owners: [] });
 };
