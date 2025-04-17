@@ -124,7 +124,7 @@ export default function DailyWorkReminderApp() {
           <h1 style={{ fontSize: "1.8rem", fontWeight: "bold" }}>待辦清單</h1>
           <div style={{ marginBottom: "1rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
             <textarea
-              style={{ resize: "horizontal", minWidth: "240px", background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
+              style={{ resize: "horizontal", minWidth: "600px", background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
               placeholder="輸入新待辦項目"
               value={newTask.content}
               onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
