@@ -158,7 +158,7 @@ const generateTextOutput = () => {
 />
             <button onClick={handleAddTask} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>新增</button>
             <button onClick={() => setShowTextOutput(!showTextOutput)} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>
-              {showTextOutput ? "隱藏文字清單" : "產生可複製清單"}
+              {showTextOutput ? "隱藏文字清單" : "產生文字版清單"}
             </button>
             <div style={{ flexBasis: "100%", marginTop: "0.5rem" }}>
               <strong>負責人：</strong>
