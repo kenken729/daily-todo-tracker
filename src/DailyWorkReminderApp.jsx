@@ -116,19 +116,30 @@ const generateTextOutput = () => {
   people.forEach((person) => {
     const personTasks = tasks
       .filter((task) => task.owners.includes(person) && !task.completed)
-      .sort((a, b) => new Date(a.due) - new Date(b.due)); // 🔁 排序在這裡
+      .sort((a, b) => new Date(a.due) - new Date(b.due));
 
     if (personTasks.length > 0) {
       text += `\n👤 ${person}\n`;
+
       personTasks.forEach((task) => {
         const dueDate = parseISO(task.due);
         const today = new Date();
-        const status = isToday(dueDate)
-          ? "｜⚠️ 今日截止"
-          : isBefore(dueDate, today)
-          ? "｜⚠️ 已逾期"
-          : "";
-        text += `- ${task.content}｜⏰ 截止日：${format(dueDate, "yyyy-MM-dd")}${status}\n`;
+        const isTodayDue = isToday(dueDate);
+        const isOverdue = isBefore(dueDate, today);
+
+        const isEnglish = ["小希", "妍麗", "達那"].includes(person);
+        const label = isEnglish ? "Due" : "截止日";
+        const todayText = isEnglish
+          ? "｜⚠️ <span style='color: orange'>Due Today</span>"
+          : "｜⚠️ <span style='color: orange'>今日截止</span>";
+        const overdueText = isEnglish
+          ? "｜⚠️ <span style='color: red'>Overdue</span>"
+          : "｜⚠️ <span style='color: red'>已逾期</span>";
+
+        text += `- ${task.content}｜⏰ ${label}：${format(dueDate, "yyyy-MM-dd")}`;
+        if (isTodayDue) text += todayText;
+        else if (isOverdue) text += overdueText;
+        text += "\n";
       });
     }
   });
