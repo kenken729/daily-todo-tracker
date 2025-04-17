@@ -239,6 +239,7 @@ const generateTextOutput = () => {
                       <input
   type="text"
   value={task.content}
+  title={task.content} // 👈 新增這行
   onChange={(e) => {
     const newContent = e.target.value;
     setTasks((prev) =>
