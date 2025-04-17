@@ -157,15 +157,45 @@ const entries = owners.map((owner) => ({
           </button>
           <div style={{ flexBasis: "100%", marginTop: "0.5rem" }}>
             <strong>負責人：</strong>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginTop: "0.5rem" }}>
-              {["所有人", "國內", "海外", ...people].map((p) => (
-                <label key={p}>
-                  <input
-                    type="checkbox"
-                    checked={newTask.owners.includes(p)}
-                    onChange={() => toggleOwner(p)}
-                  /> {p}
-                </label>
+<div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "0.5rem" }}>
+  <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+    {["所有人", "國內", "海外"].map((p) => (
+      <label key={p}>
+        <input
+          type="checkbox"
+          checked={newTask.owners.includes(p)}
+          onChange={() => toggleOwner(p)}
+        /> {p}
+      </label>
+    ))}
+  </div>
+
+  <div style={{ marginTop: "0.5rem", fontWeight: "bold" }}>📂 國內部門</div>
+  <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+    {["佳平", "潘霆", "彥銘", "姿穎", "育全", "張琪", "志賢"].map((p) => (
+      <label key={p}>
+        <input
+          type="checkbox"
+          checked={newTask.owners.includes(p)}
+          onChange={() => toggleOwner(p)}
+        /> {p}
+      </label>
+    ))}
+  </div>
+
+  <div style={{ marginTop: "0.5rem", fontWeight: "bold" }}>🌏 海外部門</div>
+  <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+    {["佳宇", "琪珊", "雄欽", "達那", "韋燕", "妍麗", "小希"].map((p) => (
+      <label key={p}>
+        <input
+          type="checkbox"
+          checked={newTask.owners.includes(p)}
+          onChange={() => toggleOwner(p)}
+        /> {p}
+      </label>
+    ))}
+  </div>
+</div>
               ))}
             </div>
           </div>
