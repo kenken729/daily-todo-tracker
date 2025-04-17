@@ -40,14 +40,28 @@ export default function DailyWorkReminderApp() {
 
   const handleAddTask = () => {
     if (!newTask.content || !newTask.due || newTask.owners.length === 0) return;
-    const owners = newTask.owners.includes("所有人") ? people : newTask.owners;
-    const entries = owners.map((owner) => ({
-      ...newTask,
-      owners: [owner],
-      id: Date.now() + Math.random(),
-      createdAt: new Date().toISOString(),
-      completed: false
-    }));
+const resolveOwners = () => {
+  let resolved = [];
+
+  newTask.owners.forEach((o) => {
+    if (o === "所有人") resolved.push(...people);
+    else if (o === "國內") resolved.push("佳平", "潘霆", "彥銘", "姿穎", "育全");
+    else if (o === "海外") resolved.push("佳宇", "雄欽", "琪珊", "達那", "韋燕");
+    else resolved.push(o);
+  });
+
+  // 去除重複
+  return [...new Set(resolved)];
+};
+
+const owners = resolveOwners();
+const entries = owners.map((owner) => ({
+  ...newTask,
+  owners: [owner],
+  id: Date.now() + Math.random(),
+  createdAt: new Date().toISOString(),
+  completed: false
+}));
     setTasks([...tasks, ...entries]);
     setNewTask({ content: "", due: "", owners: [] });
   };
