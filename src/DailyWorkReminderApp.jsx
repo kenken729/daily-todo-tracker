@@ -43,34 +43,45 @@ const [newTask, setNewTask] = useState({
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  const handleAddTask = () => {
-    if (!newTask.content || !newTask.due || newTask.owners.length === 0) return;
+const handleAddTask = () => {
+  if (!newTask.content) {
+    alert("請輸入代辦項目內容");
+    return;
+  }
+  if (!newTask.due) {
+    alert("請選擇截止日期");
+    return;
+  }
+  if (newTask.owners.length === 0) {
+    alert("請選擇至少一位負責人");
+    return;
+  }
 
-    const resolveOwners = () => {
-      let resolved = [];
-      newTask.owners.forEach((o) => {
-        if (o === "所有人") resolved.push(...people);
-        else if (o === "國內") resolved.push("佳平", "潘霆", "彥銘", "姿穎", "育全", "鈺庭");
-        else if (o === "海外") resolved.push("佳宇", "雄欽", "琪珊", "達那", "韋燕");
-        else resolved.push(o);
-      });
-      return [...new Set(resolved)];
-    };
-
-const owners = resolveOwners();
-const dueDate = newTask.due || new Date().toISOString().split("T")[0];
-
-const entries = owners.map((owner) => ({
-  ...newTask,
-  due: dueDate,
-  owners: [owner],
-  id: Date.now() + Math.random(),
-  createdAt: new Date().toISOString(),
-  completed: false
-}));
-    setTasks([...tasks, ...entries]);
-    setNewTask({ content: "", due: "", owners: [] });
+  const resolveOwners = () => {
+    let resolved = [];
+    newTask.owners.forEach((o) => {
+      if (o === "所有人") resolved.push(...people);
+      else if (o === "國內") resolved.push("佳平", "潘霆", "彥銘", "姿穎", "育全", "鈺庭");
+      else if (o === "海外") resolved.push("佳宇", "雄欽", "琪珊", "達那", "韋燕");
+      else resolved.push(o);
+    });
+    return [...new Set(resolved)];
   };
+
+  const owners = resolveOwners();
+  const dueDate = newTask.due || new Date().toISOString().split("T")[0];
+
+  const entries = owners.map((owner) => ({
+    ...newTask,
+    due: dueDate,
+    owners: [owner],
+    id: Date.now() + Math.random(),
+    createdAt: new Date().toISOString(),
+    completed: false
+  }));
+  setTasks([...tasks, ...entries]);
+  setNewTask({ content: "", due: "", owners: [] });
+};
 
   const toggleOwner = (owner) => {
     setNewTask((prev) => ({
