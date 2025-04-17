@@ -129,12 +129,8 @@ const generateTextOutput = () => {
 
         const isEnglish = ["小希", "妍麗", "達那"].includes(person);
         const label = isEnglish ? "Due" : "截止日";
-        const todayText = isEnglish
-          ? "｜⚠️ <span style='color: orange'>Due Today</span>"
-          : "｜⚠️ <span style='color: orange'>今日截止</span>";
-        const overdueText = isEnglish
-          ? "｜⚠️ <span style='color: red'>Overdue</span>"
-          : "｜⚠️ <span style='color: red'>已逾期</span>";
+        const todayText = isEnglish ? "｜⚠️ Due Today" : "｜⚠️ 今日截止";
+        const overdueText = isEnglish ? "｜⚠️ Overdue" : "｜⚠️ 已逾期";
 
         text += `- ${task.content}｜⏰ ${label}：${format(dueDate, "yyyy-MM-dd")}`;
         if (isTodayDue) text += todayText;
