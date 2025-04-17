@@ -121,13 +121,6 @@ export default function DailyWorkReminderApp() {
     <div style={{ maxWidth: "1200px", margin: "auto", display: "flex", gap: "2rem" }}>
       <div style={{ flex: 1 }}>
         <h1 style={{ fontSize: "1.8rem", fontWeight: "bold" }}>待辦清單</h1>
-        <input
-          type="text"
-          placeholder="搜尋..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{ marginBottom: "1rem", padding: "0.3rem", width: "100%", background: "#f4f4f4", border: "1px solid #ccc" }}
-        />
         <div style={{ marginBottom: "1rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
           <textarea
             style={{ resize: "horizontal", minWidth: "240px", background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
