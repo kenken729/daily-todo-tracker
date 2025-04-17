@@ -4,7 +4,7 @@ import { format, isBefore, isToday, isWithinInterval, parseISO } from "date-fns"
 const people = [
   "佳平", "潘霆", "彥銘", "姿穎", "育全",
   "佳宇", "琪珊", "雄欽", "達那", "韋燕",
-  "妍麗", "小希", "張琪", "志賢"
+  "妍麗", "小希", "張琪", "志賢", "鈺庭"
 ];
 
 export default function DailyWorkReminderApp() {
@@ -50,7 +50,7 @@ const [newTask, setNewTask] = useState({
       let resolved = [];
       newTask.owners.forEach((o) => {
         if (o === "所有人") resolved.push(...people);
-        else if (o === "國內") resolved.push("佳平", "潘霆", "彥銘", "姿穎", "育全");
+        else if (o === "國內") resolved.push("佳平", "潘霆", "彥銘", "姿穎", "育全", "鈺庭");
         else if (o === "海外") resolved.push("佳宇", "雄欽", "琪珊", "達那", "韋燕");
         else resolved.push(o);
       });
@@ -158,7 +158,7 @@ const [newTask, setNewTask] = useState({
                   ))}
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-                  {["佳平", "潘霆", "彥銘", "姿穎", "育全", "張琪", "志賢"].map((p) => (
+                  {["佳平", "潘霆", "彥銘", "姿穎", "育全", "鈺庭", "張琪", "志賢"].map((p) => (
                     <label key={p}>
                       <input
                         type="checkbox"
