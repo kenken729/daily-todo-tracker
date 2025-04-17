@@ -1,21 +1,34 @@
-
-// DailyWorkReminderApp.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { format, isBefore, isToday, isWithinInterval, parseISO } from "date-fns";
 
 const people = [
-  "佳平", "潘霆", "彥銘", "姿穎", "育全", "佳宇", "琪珊", "雄欽", "達那", "韋燕", "妍麗", "小希", "張琪", "志賢", "所有人"
+  "佳平", "潘霆", "彥銘", "姿穎", "育全", "佳宇", "琪珊", "雄欽", "達那", "韋燕", "妍麗", "小希", "張琪", "志賢"
 ];
 
 export default function DailyWorkReminderApp() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({ content: "", due: "", owners: [] });
-  const [showTextOutput, setShowTextOutput] = useState(false);
+
+  useEffect(() => {
+    fetch("./default-tasks.json")
+      .then((res) => res.json())
+      .then((data) => {
+        const preloaded = data.map((t) => ({
+          ...t,
+          id: Date.now() + Math.random(),
+          createdAt: new Date().toISOString(),
+          completed: false
+        }));
+        setTasks(preloaded);
+      });
+  }, []);
 
   const handleAddTask = () => {
     if (!newTask.content || !newTask.due || newTask.owners.length === 0) return;
+    const owners = newTask.owners.includes("所有人") ? people : newTask.owners;
     const task = {
       ...newTask,
+      owners,
       id: Date.now(),
       createdAt: new Date().toISOString(),
       completed: false
@@ -25,81 +38,39 @@ export default function DailyWorkReminderApp() {
   };
 
   const toggleComplete = (id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+    setTasks(tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
   };
 
   const removeTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+    setTasks(tasks.filter((t) => t.id !== id));
   };
 
   const getColor = (due) => {
     const today = new Date();
     const dueDate = parseISO(due);
-    if (isToday(dueDate)) return "bg-yellow-200";
-    if (isBefore(dueDate, today)) return "bg-red-200";
-    if (
-      isWithinInterval(dueDate, {
-        start: today,
-        end: new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000)
-      })
-    )
-      return "bg-green-200";
-    return "";
+    if (isToday(dueDate)) return "#fff9c4";
+    if (isBefore(dueDate, today)) return "#ffcdd2";
+    if (isWithinInterval(dueDate, { start: today, end: new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000) }))
+      return "#c8e6c9";
+    return "#ffffff";
   };
 
-  const sortedTasks = [...tasks].sort((a, b) => {
-    const dateA = new Date(a.due);
-    const dateB = new Date(b.due);
-    return dateA - dateB;
-  });
-
-  const generateTextOutput = () => {
-    let text = "";
-    people.forEach((person) => {
-      const personTasks = sortedTasks.filter(
-        (task) => task.owners.includes(person) && !task.completed
-      );
-      if (personTasks.length > 0) {
-        text += `\n👤 ${person}\n`;
-        personTasks.forEach((task) => {
-          const dueDate = parseISO(task.due);
-          const today = new Date();
-          const status = isToday(dueDate)
-            ? "｜⚠️ 今日截止"
-            : isBefore(dueDate, today)
-            ? "｜⚠️ 已逾期"
-            : "";
-          text += `- ${task.content}｜⏰ 截止日：${format(
-            dueDate,
-            "yyyy-MM-dd"
-          )}${status}\n`;
-        });
-      }
-    });
-    return text.trim();
-  };
+  const sortedTasks = [...tasks].sort((a, b) => new Date(a.due) - new Date(b.due));
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">每日工作提醒清單</h1>
-
-      <div className="mb-6">
+    <div style={{ maxWidth: "860px", margin: "auto" }}>
+      <h1 style={{ fontSize: "1.8rem", fontWeight: "bold" }}>待辦清單</h1>
+      <div style={{ marginBottom: "1rem", display: "flex", gap: "0.5rem" }}>
         <input
           type="text"
-          placeholder="輸入工作內容"
+          placeholder="輸入新待辦項目"
           value={newTask.content}
           onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
-          className="border p-2 mr-2"
         />
         <input
           type="date"
           value={newTask.due}
           onChange={(e) => setNewTask({ ...newTask, due: e.target.value })}
-          className="border p-2 mr-2"
         />
         <select
           multiple
@@ -107,76 +78,59 @@ export default function DailyWorkReminderApp() {
           onChange={(e) =>
             setNewTask({
               ...newTask,
-              owners: Array.from(e.target.selectedOptions, (option) => option.value)
+              owners: Array.from(e.target.selectedOptions, (opt) => opt.value)
             })
           }
-          className="border p-2 mr-2 h-28"
         >
-          {people.map((person) => (
-            <option key={person} value={person}>
-              {person}
+          {["所有人", ...people].map((p) => (
+            <option key={p} value={p}>
+              {p}
             </option>
           ))}
         </select>
-        <button onClick={handleAddTask} className="bg-blue-500 text-white px-4 py-2">
-          新增
-        </button>
-        <button
-          onClick={() => setShowTextOutput(!showTextOutput)}
-          className="ml-4 bg-gray-700 text-white px-4 py-2"
-        >
-          {showTextOutput ? "隱藏文字清單" : "產生可複製清單"}
-        </button>
+        <button onClick={handleAddTask}>新增</button>
       </div>
 
-      {showTextOutput && (
-        <textarea
-          className="w-full border p-4 mb-6 whitespace-pre-wrap h-64 text-sm"
-          readOnly
-          value={generateTextOutput()}
-        />
-      )}
-
-      {people.map((person) => (
-        <div key={person} className="mb-4">
-          <h2 className="text-xl font-semibold mb-2">{person}</h2>
-          {sortedTasks
-            .filter((task) => task.owners.includes(person))
-            .map((task) => (
+      {people.map((person) => {
+        const list = sortedTasks.filter((t) => t.owners.includes(person));
+        return list.length > 0 ? (
+          <div key={person} style={{ marginBottom: "1.5rem" }}>
+            <h2 style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>👤 {person}</h2>
+            {list.map((task) => (
               <div
                 key={task.id}
-                className={`p-2 mb-2 border rounded flex justify-between items-center ${
-                  task.completed ? "opacity-50" : getColor(task.due)
-                }`}
+                style={{
+                  background: getColor(task.due),
+                  padding: "0.5rem 1rem",
+                  borderRadius: "6px",
+                  marginBottom: "0.5rem",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  opacity: task.completed ? 0.4 : 1
+                }}
               >
                 <div>
-                  <p className="font-medium">
+                  <label>
                     <input
                       type="checkbox"
                       checked={task.completed}
                       onChange={() => toggleComplete(task.id)}
-                      className="mr-2"
-                    />
+                    />{" "}
                     {task.content}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    截止日：{format(parseISO(task.due), "yyyy-MM-dd")}｜建立日：
-                    {format(parseISO(task.createdAt), "yyyy-MM-dd")}
+                  </label>
+                  <div style={{ fontSize: "0.8rem", color: "#444" }}>
+                    截止：{format(parseISO(task.due), "yyyy-MM-dd")}｜建立：{format(parseISO(task.createdAt), "yyyy-MM-dd")}
                     {isToday(parseISO(task.due)) && !task.completed && " ⚠️ 今日截止"}
-                    {isBefore(parseISO(task.due), new Date()) && !task.completed &&
-                      " ⚠️ 已逾期"}
-                  </p>
+                    {isBefore(parseISO(task.due), new Date()) && !task.completed && " ⚠️ 已逾期"}
+                  </div>
                 </div>
-                <button
-                  onClick={() => removeTask(task.id)}
-                  className="text-red-500 hover:underline"
-                >
-                  移除
-                </button>
+                <button onClick={() => removeTask(task.id)}>移除</button>
               </div>
             ))}
-        </div>
-      ))}
+          </div>
+        ) : null;
+      })}
     </div>
   );
 }
