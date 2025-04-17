@@ -248,7 +248,8 @@ const generateTextOutput = () => {
   }}
   style={{
     fontWeight: "bold",
-    fontSize: "1rem",
+    fontSize:task.content.length > 50 ? "0.8rem" :
+      task.content.length > 30 ? "0.9rem" : "1rem",
     border: "none",
     background: "transparent",
     width: "500px",
