@@ -235,6 +235,7 @@ const generateTextOutput = () => {
                       }}
                     >
                       <div>
+  <div style={{ flexGrow: 1 }}>
                       <input
   type="text"
   value={task.content}
@@ -257,6 +258,8 @@ const generateTextOutput = () => {
     display: "block"
   }}
 />
+    </div>
+    
                        <div style={{ fontSize: "0.8rem", color: "#444", display: "flex", alignItems: "center", gap: "0.5rem" }}>
   建立：{format(parseISO(task.createdAt), "yyyy-MM-dd")}｜截止：
   <input
