@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { format, isBefore, isToday, isWithinInterval, parseISO } from "date-fns";
 
+const [editingId, setEditingId] = useState(null);
 const people = [
   "佳平", "潘霆", "彥銘", "姿穎", "育全", "鈺庭",
   "佳宇", "琪珊", "雄欽", "達那", "韋燕",
@@ -236,29 +237,47 @@ const generateTextOutput = () => {
                     >
                       <div>
   <div style={{ flex: 1 }}>
-                      <input
-  type="text"
-  value={task.content}
-  onChange={(e) => {
-    const newContent = e.target.value;
-    setTasks((prev) =>
-      prev.map((t) => t.id === task.id ? { ...t, content: newContent } : t)
-    );
-  }}
-  style={{
-    fontWeight: "bold",
-    fontSize: "1rem",
-    border: "none",
-    background: "transparent",
-    width: "100%",
-    padding: "0.2rem 0",
-    outline: "none",
-    whiteSpace: "nowrap",
-    overflowX: "auto",
-    display: "block"
-  }}
-/>
-    </div>
+  {editingId === task.id ? (
+    <input
+      type="text"
+      autoFocus
+      value={task.content}
+      onChange={(e) => {
+        const newContent = e.target.value;
+        setTasks((prev) =>
+          prev.map((t) => t.id === task.id ? { ...t, content: newContent } : t)
+        );
+      }}
+      onBlur={() => setEditingId(null)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") setEditingId(null);
+      }}
+      style={{
+        width: "100%",
+        fontWeight: "bold",
+        fontSize: "1rem",
+        border: "1px solid #ccc",
+        padding: "2px 6px"
+      }}
+    />
+  ) : (
+    <span
+      onClick={() => setEditingId(task.id)}
+      style={{
+        fontWeight: "bold",
+        fontSize: "1rem",
+        cursor: "pointer",
+        whiteSpace: "nowrap",
+        overflowX: "auto",
+        display: "inline-block",
+        maxWidth: "100%"
+      }}
+      title={task.content}
+    >
+      {task.content}
+    </span>
+  )}
+</div>
     
                        <div style={{ fontSize: "0.8rem", color: "#444", display: "flex", alignItems: "center", gap: "0.5rem" }}>
   建立：{format(parseISO(task.createdAt), "yyyy-MM-dd")}｜截止：
