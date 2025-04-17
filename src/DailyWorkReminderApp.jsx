@@ -13,7 +13,11 @@ export default function DailyWorkReminderApp() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [newTask, setNewTask] = useState({ content: "", due: "", owners: [] });
+const [newTask, setNewTask] = useState({
+  content: "",
+  due: new Date().toISOString().split("T")[0], // 轉為 yyyy-MM-dd 格式
+  owners: []
+});
   const [showTextOutput, setShowTextOutput] = useState(false);
 
   useEffect(() => {
