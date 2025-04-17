@@ -48,10 +48,6 @@ const handleAddTask = () => {
     alert("請輸入代辦項目內容");
     return;
   }
-  if (!newTask.due) {
-    alert("請選擇截止日期");
-    return;
-  }
   if (newTask.owners.length === 0) {
     alert("請選擇至少一位負責人");
     return;
