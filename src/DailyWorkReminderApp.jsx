@@ -111,27 +111,29 @@ const entries = owners.flatMap((owner) =>
     return "#f2f2f2";
   };
 
-  const generateTextOutput = () => {
-    let text = "";
-    people.forEach((person) => {
-      const personTasks = tasks.filter((task) => task.owners.includes(person) && !task.completed);
+const generateTextOutput = () => {
+  let text = "";
+  people.forEach((person) => {
+    const personTasks = tasks
+      .filter((task) => task.owners.includes(person) && !task.completed)
       .sort((a, b) => new Date(a.due) - new Date(b.due)); // 🔁 排序在這裡
-      if (personTasks.length > 0) {
-        text += `\n👤 ${person}\n`;
-        personTasks.forEach((task) => {
-          const dueDate = parseISO(task.due);
-          const today = new Date();
-          const status = isToday(dueDate)
-            ? "｜⚠️ 今日截止"
-            : isBefore(dueDate, today)
-            ? "｜⚠️ 已逾期"
-            : "";
-          text += `- ${task.content}｜⏰ 截止日：${format(dueDate, "yyyy-MM-dd")}${status}\n`;
-        });
-      }
-    });
-    return text.trim();
-  };
+
+    if (personTasks.length > 0) {
+      text += `\n👤 ${person}\n`;
+      personTasks.forEach((task) => {
+        const dueDate = parseISO(task.due);
+        const today = new Date();
+        const status = isToday(dueDate)
+          ? "｜⚠️ 今日截止"
+          : isBefore(dueDate, today)
+          ? "｜⚠️ 已逾期"
+          : "";
+        text += `- ${task.content}｜⏰ 截止日：${format(dueDate, "yyyy-MM-dd")}${status}\n`;
+      });
+    }
+  });
+  return text.trim();
+};
 
   const sortedPendingTasks = tasks.filter((t) => !t.completed).sort((a, b) => new Date(a.due) - new Date(b.due));
   const sortedCompletedTasks = tasks.filter((t) => t.completed).sort((a, b) => new Date(b.due) - new Date(a.due));
