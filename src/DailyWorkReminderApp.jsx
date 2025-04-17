@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { format, isBefore, isToday, isWithinInterval, parseISO } from "date-fns";
 
 const people = [
-  "佳平", "潘霆", "彥銘", "姿穎", "育全",
+  "佳平", "潘霆", "彥銘", "姿穎", "育全", "鈺庭",
   "佳宇", "琪珊", "雄欽", "達那", "韋燕",
-  "妍麗", "小希", "張琪", "志賢", "鈺庭"
+  "妍麗", "小希", "張琪", "志賢"
 ];
 
 export default function DailyWorkReminderApp() {
