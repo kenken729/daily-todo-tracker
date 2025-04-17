@@ -250,8 +250,11 @@ const generateTextOutput = () => {
     border: "none",
     background: "transparent",
     width: "100%",
+    padding: "0.2rem 0",
+    outline: "none",
+    whiteSpace: "nowrap",
     overflowX: "auto",
-    whiteSpace: "nowrap"
+    display: "block"
   }}
 />
                        <div style={{ fontSize: "0.8rem", color: "#444", display: "flex", alignItems: "center", gap: "0.5rem" }}>
