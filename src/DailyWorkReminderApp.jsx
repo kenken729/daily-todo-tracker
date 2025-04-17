@@ -249,10 +249,10 @@ const generateTextOutput = () => {
     fontSize: "1rem",
     border: "none",
     background: "transparent",
-    minWidth: "10ch",
-    maxWidth: "100%",
-    width: `${Math.max(10, task.content.length)}ch`,
-    overflow: "hidden"
+    width: "100%",
+    minWidth: "100%",
+    whiteSpace: "normal",
+    overflowWrap: "break-word"
   }}
 />
                        <div style={{ fontSize: "0.8rem", color: "#444", display: "flex", alignItems: "center", gap: "0.5rem" }}>
