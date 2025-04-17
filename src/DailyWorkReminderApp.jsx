@@ -158,7 +158,7 @@ const entries = owners.map((owner) => ({
           <div style={{ flexBasis: "100%", marginTop: "0.5rem" }}>
             <strong>負責人：</strong>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginTop: "0.5rem" }}>
-              {["所有人", ...people].map((p) => (
+              {["所有人", "國內", "海外", ...people].map((p) => (
                 <label key={p}>
                   <input
                     type="checkbox"
