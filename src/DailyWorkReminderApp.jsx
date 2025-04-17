@@ -235,7 +235,7 @@ const generateTextOutput = () => {
                       }}
                     >
                       <div>
-  <div style={{ flexGrow: 1 }}>
+  <div style={{ flex: 1 }}>
                       <input
   type="text"
   value={task.content}
