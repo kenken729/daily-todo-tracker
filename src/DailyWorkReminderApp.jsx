@@ -251,7 +251,7 @@ const generateTextOutput = () => {
     fontSize: "1rem",
     border: "none",
     background: "transparent",
-    width: "100%",
+    width: "500px",
     padding: "0.2rem 0",
     outline: "none",
     whiteSpace: "nowrap",
