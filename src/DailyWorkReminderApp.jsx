@@ -235,8 +235,8 @@ const generateTextOutput = () => {
                       }}
                     >
                       <div>
-                       <input
-  type="text"
+                       <textarea
+  rows={1}
   value={task.content}
   onChange={(e) => {
     const newContent = e.target.value;
@@ -249,10 +249,10 @@ const generateTextOutput = () => {
     fontSize: "1rem",
     border: "none",
     background: "transparent",
+    resize: "none",
     width: "100%",
-    minWidth: "100%",
-    whiteSpace: "normal",
-    overflowWrap: "break-word"
+    overflow: "hidden",
+    whiteSpace: "pre-wrap"
   }}
 />
                        <div style={{ fontSize: "0.8rem", color: "#444", display: "flex", alignItems: "center", gap: "0.5rem" }}>
