@@ -172,7 +172,15 @@ const generateTextOutput = () => {
 <select
   onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
   defaultValue=""
-  style={{ padding: "0.3rem", border: "1px solid #ccc", background: "#fff" }}
+  style={{
+    padding: "0.3rem",
+    border: "1px solid #ccc",
+    background: "#fff",
+    maxWidth: "250px",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden"
+  }}
 >
   <option value="" disabled>選擇常用項目</option>
   {savedItems.map((item, idx) => (
@@ -187,21 +195,15 @@ const generateTextOutput = () => {
     const updated = [...new Set([...savedItems, item])];
     setSavedItems(updated);
     localStorage.setItem("savedItems", JSON.stringify(updated));
-  }}>儲存本次內容為常用項目</button>
+  }}>儲存為常用</button>
 
   <button
     onClick={() => setShowSavedEditor((prev) => !prev)}
     style={{ padding: "0.3rem", border: "1px solid #ccc", background: "#fafafa" }}
   >
-    {showSavedEditor ? "隱藏常用項目管理" : "管理已儲存的常用項目"}
+    {showSavedEditor ? "隱藏管理項目" : "管理常用項目"}
   </button>
 </div>
-<button
-  onClick={() => setShowSavedEditor((prev) => !prev)}
-  style={{ padding: "0.3rem", border: "1px solid #ccc", background: "#fafafa" }}
->
-  {showSavedEditor ? "隱藏常用項目管理" : "管理已儲存的常用項目"}
-</button>
 
 {/* 顯示並操作已儲存的常用項目（加上顯示開關） */}
 {showSavedEditor && savedItems.length > 0 && (
