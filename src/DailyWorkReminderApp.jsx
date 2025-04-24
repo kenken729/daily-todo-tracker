@@ -248,44 +248,6 @@ const generateTextOutput = () => {
   </div>
 )}
 
-{/* 顯示並操作已儲存的常用項目（加上顯示開關） */}
-{showSavedEditor && savedItems.length > 0 && (
-  <div style={{ marginTop: "0.5rem" }}>
-    <strong>已儲存的常用項目：</strong>
-    <ul style={{ padding: 0, margin: 0 }}>
-      {savedItems.map((item, idx) => (
-        <li key={idx} style={{ display: "flex", alignItems: "center", marginBottom: "0.3rem", gap: "0.5rem" }}>
-          <span>{item}</span>
-          <button onClick={() => setNewTask(prev => ({ ...prev, content: item }))}>套用</button>
-          <button onClick={() => {
-            const edited = prompt("修改此常用項目：", item);
-            if (edited && edited.trim()) {
-              const updated = [...savedItems];
-              updated[idx] = edited.trim();
-              setSavedItems(updated);
-              localStorage.setItem("savedItems", JSON.stringify(updated));
-            }
-          }}>編輯</button>
-          <button onClick={() => {
-            const updated = savedItems.filter((_, i) => i !== idx);
-            setSavedItems(updated);
-            localStorage.setItem("savedItems", JSON.stringify(updated));
-          }} style={{ color: "red" }}>刪除</button>
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
-<input
-  type="date"
-  defaultValue={new Date().toISOString().split("T")[0]}
-  onChange={(e) => setNewTask({ ...newTask, due: e.target.value })}
-  style={{ background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
-/>
-            <button onClick={handleAddTask} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>新增</button>
-            <button onClick={() => setShowTextOutput(!showTextOutput)} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>
-              {showTextOutput ? "隱藏文字清單" : "產生文字版清單"}
-            </button>
             <div style={{ flexBasis: "100%", marginTop: "0.5rem" }}>
               <strong>負責人：</strong>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "0.5rem" }}>
