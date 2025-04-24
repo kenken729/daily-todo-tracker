@@ -189,13 +189,18 @@ const generateTextOutput = () => {
     ))}
   </select>
 
-  <button onClick={() => {
+<button
+  onClick={() => {
     const item = newTask.content.trim();
     if (!item) return;
     const updated = [...new Set([...savedItems, item])];
     setSavedItems(updated);
     localStorage.setItem("savedItems", JSON.stringify(updated));
-  }}>儲存為常用</button>
+  }}
+  style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}
+>
+  儲存為常用
+</button>
 
   <button
     onClick={() => setShowSavedEditor((prev) => !prev)}
