@@ -13,10 +13,10 @@ export default function DailyWorkReminderApp() {
     return saved ? JSON.parse(saved) : [];
   });
 
-const [newTask, setNewTask] = useState({
-  content: "",
-  due: "",
-  owners: []
+const [newTask, setNewTask] = useState({ title: "", content: "", due: "", owners: [] });
+  const [savedItems, setSavedItems] = useState(() => {
+  const saved = localStorage.getItem("savedItems");
+  return saved ? JSON.parse(saved) : [];
 });
   const [showTextOutput, setShowTextOutput] = useState(false);
 
@@ -71,7 +71,7 @@ const contentParts = newTask.content.split("、").map(part => part.trim()).filte
 
 const entries = owners.flatMap((owner) =>
   contentParts.map((part) => ({
-    content: part,
+    content: newTask.title ? `《${newTask.title}》${part}` : part,
     due: dueDate,
     owners: [owner],
     id: Date.now() + Math.random(),
@@ -80,7 +80,7 @@ const entries = owners.flatMap((owner) =>
   }))
 );
   setTasks([...tasks, ...entries]);
-  setNewTask((prev) => ({ content: "", due: prev.due, owners: [] }));
+  setNewTask((prev) => ({ title: "", content: "", due: prev.due, owners: [] }));
 };
 
   const toggleOwner = (owner) => {
@@ -151,12 +151,41 @@ const generateTextOutput = () => {
         <div style={{ flex: 1 }}>
           <h1 style={{ fontSize: "1.8rem", fontWeight: "bold" }}>待辦清單</h1>
           <div style={{ marginBottom: "1rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
-            <textarea
-              style={{ resize: "horizontal", minWidth: "600px", background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
-              placeholder="輸入新待辦項目"
-              value={newTask.content}
-              onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
-            />
+<textarea
+  style={{ resize: "horizontal", minWidth: "600px", background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
+  placeholder="輸入作品名稱（可空白）"
+  value={newTask.title || ""}
+  onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+/>
+
+{/* 待辦事項內容欄位 */}
+<textarea
+  style={{ resize: "horizontal", minWidth: "600px", background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
+  placeholder="輸入新待辦項目"
+  value={newTask.content}
+  onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
+/>
+
+{/* 常用項目下拉選單 */}
+<select
+  onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
+  defaultValue=""
+  style={{ padding: "0.3rem", border: "1px solid #ccc", background: "#fff" }}
+>
+  <option value="" disabled>選擇常用項目</option>
+  {savedItems.map((item, idx) => (
+    <option key={idx} value={item}>{item}</option>
+  ))}
+</select>
+
+{/* 儲存為常用項目按鈕 */}
+<button onClick={() => {
+  const item = newTask.content.trim();
+  if (!item) return;
+  const updated = [...new Set([...savedItems, item])];
+  setSavedItems(updated);
+  localStorage.setItem("savedItems", JSON.stringify(updated));
+}}>儲存本次內容為常用項目</button>
 <input
   type="date"
   defaultValue={new Date().toISOString().split("T")[0]}
