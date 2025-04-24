@@ -169,26 +169,26 @@ const generateTextOutput = () => {
 />
 
 {/* 常用項目下拉選單 */}
-<select
-  onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
-  defaultValue=""
-  style={{
-    padding: "0.3rem",
-    border: "1px solid #ccc",
-    background: "#fff",
-    maxWidth: "250px",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-    overflow: "hidden"
-  }}
->
-  <option value="" disabled>選擇常用項目</option>
-  {savedItems.map((item, idx) => (
-    <option key={idx} value={item}>{item}</option>
-  ))}
-</select>
+<div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+  <select
+    onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
+    defaultValue=""
+    style={{
+      padding: "0.3rem",
+      border: "1px solid #ccc",
+      background: "#fff",
+      maxWidth: "250px",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      overflow: "hidden"
+    }}
+  >
+    <option value="" disabled>選擇常用項目</option>
+    {savedItems.map((item, idx) => (
+      <option key={idx} value={item}>{item}</option>
+    ))}
+  </select>
 
-<div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
   <button onClick={() => {
     const item = newTask.content.trim();
     if (!item) return;
@@ -204,6 +204,49 @@ const generateTextOutput = () => {
     {showSavedEditor ? "隱藏管理項目" : "管理常用項目"}
   </button>
 </div>
+
+{/* 第二行：日期、送出、產生清單為新的一行，避免被擠壓 */}
+<div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+  <input
+    type="date"
+    value={newTask.due}
+    onChange={(e) => setNewTask({ ...newTask, due: e.target.value })}
+    style={{ background: "#fff", border: "1px solid #ccc", padding: "0.3rem" }}
+  />
+  <button onClick={handleAddTask} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>新增</button>
+  <button onClick={() => setShowTextOutput(!showTextOutput)} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>
+    {showTextOutput ? "隱藏文字清單" : "產生文字版清單"}
+  </button>
+</div>
+
+{/* 顯示管理區塊：套用、編輯、刪除 */}
+{showSavedEditor && savedItems.length > 0 && (
+  <div style={{ marginTop: "0.5rem" }}>
+    <strong>已儲存的常用項目：</strong>
+    <ul style={{ padding: 0, margin: 0 }}>
+      {savedItems.map((item, idx) => (
+        <li key={idx} style={{ display: "flex", alignItems: "center", marginBottom: "0.3rem", gap: "0.5rem", flexWrap: "wrap" }}>
+          <span style={{ maxWidth: "500px", wordBreak: "break-word" }}>{item}</span>
+          <button onClick={() => setNewTask(prev => ({ ...prev, content: item }))}>套用</button>
+          <button onClick={() => {
+            const edited = prompt("修改此常用項目：", item);
+            if (edited && edited.trim()) {
+              const updated = [...savedItems];
+              updated[idx] = edited.trim();
+              setSavedItems(updated);
+              localStorage.setItem("savedItems", JSON.stringify(updated));
+            }
+          }}>編輯</button>
+          <button onClick={() => {
+            const updated = savedItems.filter((_, i) => i !== idx);
+            setSavedItems(updated);
+            localStorage.setItem("savedItems", JSON.stringify(updated));
+          }} style={{ color: "red" }}>刪除</button>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
 
 {/* 顯示並操作已儲存的常用項目（加上顯示開關） */}
 {showSavedEditor && savedItems.length > 0 && (
