@@ -204,7 +204,7 @@ const generateTextOutput = () => {
 
   <button
     onClick={() => setShowSavedEditor((prev) => !prev)}
-    style={{ padding: "0.3rem", border: "1px solid #ccc", background: "#FFFFDF" }}
+    style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#FFFFDF" }}
   >
     {showSavedEditor ? "隱藏管理項目" : "管理常用項目"}
   </button>
