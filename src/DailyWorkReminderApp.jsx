@@ -20,6 +20,7 @@ const [savedItems, setSavedItems] = useState(() => {
 });
 const [editingIndex, setEditingIndex] = useState(null);
 const [showTextOutput, setShowTextOutput] = useState(false);
+const [showSavedEditor, setShowSavedEditor] = useState(false);
 
   useEffect(() => {
     if (tasks.length === 0) {
@@ -179,17 +180,31 @@ const generateTextOutput = () => {
   ))}
 </select>
 
-{/* 儲存為常用項目按鈕 + 編輯/刪除常用項目功能 */}
-<button onClick={() => {
-  const item = newTask.content.trim();
-  if (!item) return;
-  const updated = [...new Set([...savedItems, item])];
-  setSavedItems(updated);
-  localStorage.setItem("savedItems", JSON.stringify(updated));
-}}>儲存本次內容為常用項目</button>
+<div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+  <button onClick={() => {
+    const item = newTask.content.trim();
+    if (!item) return;
+    const updated = [...new Set([...savedItems, item])];
+    setSavedItems(updated);
+    localStorage.setItem("savedItems", JSON.stringify(updated));
+  }}>儲存本次內容為常用項目</button>
 
-{/* 顯示並操作已儲存的常用項目 */}
-{savedItems.length > 0 && (
+  <button
+    onClick={() => setShowSavedEditor((prev) => !prev)}
+    style={{ padding: "0.3rem", border: "1px solid #ccc", background: "#fafafa" }}
+  >
+    {showSavedEditor ? "隱藏常用項目管理" : "管理已儲存的常用項目"}
+  </button>
+</div>
+<button
+  onClick={() => setShowSavedEditor((prev) => !prev)}
+  style={{ padding: "0.3rem", border: "1px solid #ccc", background: "#fafafa" }}
+>
+  {showSavedEditor ? "隱藏常用項目管理" : "管理已儲存的常用項目"}
+</button>
+
+{/* 顯示並操作已儲存的常用項目（加上顯示開關） */}
+{showSavedEditor && savedItems.length > 0 && (
   <div style={{ marginTop: "0.5rem" }}>
     <strong>已儲存的常用項目：</strong>
     <ul style={{ padding: 0, margin: 0 }}>
