@@ -14,11 +14,12 @@ export default function DailyWorkReminderApp() {
   });
 
 const [newTask, setNewTask] = useState({ title: "", content: "", due: "", owners: [] });
-  const [savedItems, setSavedItems] = useState(() => {
+const [savedItems, setSavedItems] = useState(() => {
   const saved = localStorage.getItem("savedItems");
   return saved ? JSON.parse(saved) : [];
 });
-  const [showTextOutput, setShowTextOutput] = useState(false);
+const [editingIndex, setEditingIndex] = useState(null);
+const [showTextOutput, setShowTextOutput] = useState(false);
 
   useEffect(() => {
     if (tasks.length === 0) {
@@ -178,7 +179,7 @@ const generateTextOutput = () => {
   ))}
 </select>
 
-{/* 儲存為常用項目按鈕 */}
+{/* 儲存為常用項目按鈕 + 編輯/刪除常用項目功能 */}
 <button onClick={() => {
   const item = newTask.content.trim();
   if (!item) return;
@@ -186,6 +187,35 @@ const generateTextOutput = () => {
   setSavedItems(updated);
   localStorage.setItem("savedItems", JSON.stringify(updated));
 }}>儲存本次內容為常用項目</button>
+
+{/* 顯示並操作已儲存的常用項目 */}
+{savedItems.length > 0 && (
+  <div style={{ marginTop: "0.5rem" }}>
+    <strong>已儲存的常用項目：</strong>
+    <ul style={{ padding: 0, margin: 0 }}>
+      {savedItems.map((item, idx) => (
+        <li key={idx} style={{ display: "flex", alignItems: "center", marginBottom: "0.3rem", gap: "0.5rem" }}>
+          <span>{item}</span>
+          <button onClick={() => setNewTask(prev => ({ ...prev, content: item }))}>套用</button>
+          <button onClick={() => {
+            const edited = prompt("修改此常用項目：", item);
+            if (edited && edited.trim()) {
+              const updated = [...savedItems];
+              updated[idx] = edited.trim();
+              setSavedItems(updated);
+              localStorage.setItem("savedItems", JSON.stringify(updated));
+            }
+          }}>編輯</button>
+          <button onClick={() => {
+            const updated = savedItems.filter((_, i) => i !== idx);
+            setSavedItems(updated);
+            localStorage.setItem("savedItems", JSON.stringify(updated));
+          }} style={{ color: "red" }}>刪除</button>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
 <input
   type="date"
   defaultValue={new Date().toISOString().split("T")[0]}
