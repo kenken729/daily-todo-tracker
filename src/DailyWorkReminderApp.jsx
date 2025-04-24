@@ -101,6 +101,10 @@ const entries = owners.flatMap((owner) =>
   const removeTask = (id) => {
     setTasks(tasks.filter((t) => t.id !== id));
   };
+  const removeCompletedForPerson = (person) => {
+  const updated = tasks.filter((t) => !(t.completed && t.owners.includes(person)));
+  setTasks(updated);
+};
 
   const getColor = (due) => {
     const today = new Date();
@@ -218,7 +222,7 @@ const generateTextOutput = () => {
     onChange={(e) => setNewTask({ ...newTask, due: e.target.value })}
     style={{ background: "#FFF", border: "1px solid #ccc", padding: "0.3rem" }}
   />
-  <button onClick={handleAddTask} style={{ padding: "0.4rem 1rem", border: "2px solid #999", background: "#F0FFF0" }}>新增</button>
+  <button onClick={handleAddTask} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#F0FFF0" }}>新增項目</button>
   <button onClick={() => setShowTextOutput(!showTextOutput)} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>
     {showTextOutput ? "隱藏文字清單" : "產生文字版清單"}
   </button>
@@ -305,7 +309,15 @@ const generateTextOutput = () => {
             const list = sortedPendingTasks.filter((t) => t.owners.includes(person));
             return (
               <div key={person} style={{ marginBottom: "1.5rem" }}>
-                <h2 style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>👤 {person}</h2>
+                <h2 style={{ fontSize: "1.2rem", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+  👤 {person}
+  <button
+    onClick={() => removeCompletedForPerson(person)}
+    style={{ fontSize: "0.8rem", padding: "0.2rem 0.6rem", border: "1px solid #999", background: "#f8d7da", color: "#721c24" }}
+  >
+    移除所有項目
+  </button>
+</h2>
                 {list.length > 0 ? (
                   list.map((task) => (
                     <div
