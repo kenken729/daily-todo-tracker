@@ -112,6 +112,12 @@ const entries = owners.flatMap((owner) =>
   };
 
 const generateTextOutput = () => {
+  const padRight = (str, length) => {
+    const fullWidth = str.replace(/[^\x00-\xff]/g, '**').length;
+    const padLength = length - fullWidth;
+    return str + ' '.repeat(padLength > 0 ? padLength : 0);
+  };
+
   let text = "";
   people.forEach((person) => {
     const personTasks = tasks
@@ -119,22 +125,27 @@ const generateTextOutput = () => {
       .sort((a, b) => new Date(a.due) - new Date(b.due));
 
     if (personTasks.length > 0) {
-      text += `\n👤 ${person}\n`;
+      text += `👤 ${person}\n`;
+      const isEnglish = ["小希", "妍麗", "達那"].includes(person);
+      const label = isEnglish ? "Due" : "截止日";
+      const todayText = isEnglish ? "⚠️ Due Today" : "⚠️ 今日截止";
+      const overdueText = isEnglish ? "⚠️ Overdue" : "⚠️ 已逾期";
+
+      text += `| ${padRight("項目名稱", 30)} | ${label}         | 提醒 | \n`;
+      text += `| ${"-".repeat(30)} | ${"-".repeat(12)} | ${"-".repeat(4)} |\n`;
+
       personTasks.forEach((task) => {
         const dueDate = parseISO(task.due);
+        const today = new Date();
         const isTodayDue = isToday(dueDate);
-        const isOverdue = isBefore(dueDate, new Date());
+        const isOverdue = isBefore(dueDate, today);
+        const dateStr = format(dueDate, "yyyy-MM-dd");
+        const status = isTodayDue ? todayText : isOverdue ? overdueText : "";
 
-        const isEnglish = ["小希", "妍麗", "達那"].includes(person);
-        const label = isEnglish ? "Due" : "截止日";
-        const todayText = isEnglish ? "｜⚠️ Due Today" : "｜⚠️ 今日截止";
-        const overdueText = isEnglish ? "｜⚠️ Overdue" : "｜⚠️ 已逾期";
-
-        text += `- ${task.content}｜⏰ ${label}：${format(dueDate, "yyyy-MM-dd")}`;
-        if (isTodayDue) text += todayText;
-        else if (isOverdue) text += overdueText;
-        text += "\n";
+        text += `| ${padRight(task.content, 30)} | ${dateStr} | ${status} |\n`;
       });
+
+      text += "\n";
     }
   });
   return text.trim();
