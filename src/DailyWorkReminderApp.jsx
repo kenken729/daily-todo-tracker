@@ -80,7 +80,7 @@ const entries = owners.flatMap((owner) =>
   }))
 );
   setTasks([...tasks, ...entries]);
-  setNewTask({ content: "", due: "", owners: [] });
+  setNewTask((prev) => ({ content: "", due: prev.due, owners: [] }));
 };
 
   const toggleOwner = (owner) => {
