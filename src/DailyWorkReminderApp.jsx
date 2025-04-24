@@ -119,22 +119,21 @@ const generateTextOutput = () => {
       .sort((a, b) => new Date(a.due) - new Date(b.due));
 
     if (personTasks.length > 0) {
-      const isEnglish = ["小希", "妍麗", "達那"].includes(person);
-      const labelTask = isEnglish ? "Task Name" : "項目名稱";
-      const labelDue = isEnglish ? "Due" : "截止日";
-      const labelToday = isEnglish ? "⚠️ Due Today" : "⚠️ 今日截止";
-      const labelOverdue = isEnglish ? "⚠️ Overdue" : "⚠️ 已逾期";
-
       text += `\n👤 ${person}\n`;
-      text += `| ${labelTask.padEnd(42, " ")} | ${labelDue}       |\n`;
-      text += `|------------------------------------------|-------------------|\n`;
-
       personTasks.forEach((task) => {
         const dueDate = parseISO(task.due);
-        const dueStr = format(dueDate, "yyyy-MM-dd");
-        const warning = isToday(dueDate) ? ` ${labelToday}` : isBefore(dueDate, new Date()) ? ` ${labelOverdue}` : "";
-        const paddedContent = task.content.padEnd(42, " ");
-        text += `| ${paddedContent} | ${dueStr}${warning} |\n`;
+        const isTodayDue = isToday(dueDate);
+        const isOverdue = isBefore(dueDate, new Date());
+
+        const isEnglish = ["小希", "妍麗", "達那"].includes(person);
+        const label = isEnglish ? "Due" : "截止日";
+        const todayText = isEnglish ? "｜⚠️ Due Today" : "｜⚠️ 今日截止";
+        const overdueText = isEnglish ? "｜⚠️ Overdue" : "｜⚠️ 已逾期";
+
+        text += `- ${task.content}｜⏰ ${label}：${format(dueDate, "yyyy-MM-dd")}`;
+        if (isTodayDue) text += todayText;
+        else if (isOverdue) text += overdueText;
+        text += "\n";
       });
     }
   });
