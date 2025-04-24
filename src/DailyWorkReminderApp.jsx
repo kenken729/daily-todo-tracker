@@ -199,7 +199,7 @@ const generateTextOutput = () => {
 
   <button
     onClick={() => setShowSavedEditor((prev) => !prev)}
-    style={{ padding: "0.3rem", border: "1px solid #ccc", background: "#fafafa" }}
+    style={{ padding: "0.3rem", border: "1px solid #ccc", background: "#FFFFDF" }}
   >
     {showSavedEditor ? "隱藏管理項目" : "管理常用項目"}
   </button>
@@ -211,7 +211,7 @@ const generateTextOutput = () => {
     type="date"
     value={newTask.due}
     onChange={(e) => setNewTask({ ...newTask, due: e.target.value })}
-    style={{ background: "#FFFFDF", border: "1px solid #ccc", padding: "0.3rem" }}
+    style={{ background: "#FFF", border: "1px solid #ccc", padding: "0.3rem" }}
   />
   <button onClick={handleAddTask} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>新增</button>
   <button onClick={() => setShowTextOutput(!showTextOutput)} style={{ padding: "0.4rem 1rem", border: "1px solid #999", background: "#eee" }}>
