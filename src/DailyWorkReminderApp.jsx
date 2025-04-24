@@ -395,15 +395,10 @@ const generateTextOutput = () => {
             const list = sortedCompletedTasks.filter((t) => t.owners.includes(person));
             return list.length > 0 ? (
               <div key={person} style={{ marginBottom: "1.5rem" }}>
-                <h2 style={{ fontSize: "1.2rem", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-  👤 {person}
-  <button
-    onClick={() => removeCompletedForPerson(person)}
-    style={{ fontSize: "0.8rem", padding: "0.2rem 0.6rem", border: "1px solid #999", background: "#f8d7da", color: "#721c24" }}
-  >
-    刪除所有項目
-  </button>
-</h2>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+  <h2 style={{ fontSize: "1.2rem", margin: 0 }}>👤 {person}</h2>
+  <button onClick={() => removeCompletedForPerson(person)} style={{ background: "#fdd", border: "1px solid #f88", padding: "0.3rem 0.6rem" }}>刪除所有項目</button>
+</div>
                 {list.map((task) => (
                   <div
                     key={task.id}
